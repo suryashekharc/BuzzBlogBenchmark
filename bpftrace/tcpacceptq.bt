@@ -1,0 +1,100 @@
+/*
+ * tcpacceptq - Monitor length and latency (in nanoseconds) of accept queue.
+ *
+ * Positional parameters:
+ *  $1: Monitoring interval in milliseconds.
+ *  $2: Port number to be monitored.
+ *
+ * Copyright (C) 2022 Georgia Tech Center for Experimental Research in Computer
+ * Systems
+ *
+ * Author: Rodrigo Alves Lima
+ */
+
+#ifndef BPFTRACE_HAVE_BTF
+#include <net/inet_connection_sock.h>
+#include <net/inet_sock.h>
+#include <net/sock.h>
+#endif
+
+BEGIN {
+  @lastprint = nsecs;
+  // Print log header.
+  printf("%-26s %-9s %-9s %-13s %-13s\n", "TIME",
+      "ACCEPTQ_LEN_AVG", "ACCEPTQ_LEN_MAX", "ACCEPTQ_LAT_AVG",
+      "ACCEPTQ_LAT_MAX");
+  // Initialize global stats variables.
+  @acceptq_len_max = 0;
+  @acceptq_len_sum = 0;
+  @acceptq_len_count = 0;
+  @acceptq_lat_max = 0;
+  @acceptq_lat_sum = 0;
+  @acceptq_lat_count = 0;
+}
+
+profile:hz:99
+/(nsecs - @lastprint) / 1000000 >= $1/ {
+  @lastprint = nsecs;
+  // Print log row.
+  printf("%-26s %-9d %-9d %-13d %-13d\n",
+      strftime("%Y-%m-%d-%H:%M:%S.%f", nsecs),
+      @acceptq_len_sum / @acceptq_len_count,
+      @acceptq_len_max,
+      @acceptq_lat_sum / @acceptq_lat_count,
+      @acceptq_lat_max);
+  // Re-initialize global stats variables.
+  @acceptq_len_max = 0;
+  @acceptq_len_sum = 0;
+  @acceptq_len_count = 0;
+  @acceptq_lat_max = 0;
+  @acceptq_lat_sum = 0;
+  @acceptq_lat_count = 0;
+}
+
+/* Trace arrival of TCP ACK packet. */
+kprobe:tcp_v4_syn_recv_sock {
+  $sk = (struct sock *) arg0;
+  $lport = $sk->__sk_common.skc_num;
+  if ($lport == $2) {
+    $req = (struct request_sock *) arg2;
+    // Set entry time in accept queue.
+    @acceptq_time[$req] = nsecs;
+    // Update accept queue length.
+    $acceptq_len = ($sk->sk_ack_backlog + 1);
+    if ($acceptq_len > @acceptq_len_max) {
+      @acceptq_len_max = $acceptq_len;
+    }
+    @acceptq_len_sum += $acceptq_len;
+    @acceptq_len_count += 1;
+  }
+}
+
+/* Trace accept of next outstanding connection. */
+kprobe:inet_csk_accept {
+  $sk = (struct sock *) arg0;
+  $lport = $sk->__sk_common.skc_num;
+  if ($lport == $2) {
+    $req = ((struct inet_connection_sock *) $sk)->icsk_accept_queue.rskq_accept_head;
+    // Update accept queue latency.
+    if (@acceptq_time[$req]) {
+      $acceptq_lat = (nsecs - @acceptq_time[$req]);
+      if ($acceptq_lat > @acceptq_lat_max) {
+        @acceptq_lat_max = $acceptq_lat;
+      }
+      @acceptq_lat_sum += $acceptq_lat;
+      @acceptq_lat_count += 1;
+      delete(@acceptq_time[$req]);
+    }
+  }
+}
+
+END {
+  // Clear global variables.
+  clear(@acceptq_len_max);
+  clear(@acceptq_len_sum);
+  clear(@acceptq_len_count);
+  clear(@acceptq_lat_max);
+  clear(@acceptq_lat_sum);
+  clear(@acceptq_lat_count);
+  clear(@acceptq_time);
+}

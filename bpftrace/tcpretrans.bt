@@ -1,0 +1,63 @@
+/*
+ * tcpretrans - Trace TCP retransmissions.
+ *
+ * Copyright (C) 2022 Georgia Tech Center for Experimental Research in Computer
+ * Systems
+ *
+ * Author: Rodrigo Alves Lima
+ *
+ * Modified version of tcpretrans.bt from the official bpftrace repository:
+ *  Copyright (c) 2018 Dale Hamel.
+ *  Licensed under the Apache License, Version 2.0 (the "License")
+ */
+
+#ifndef BPFTRACE_HAVE_BTF
+#include <linux/socket.h>
+#include <net/sock.h>
+#else
+#include <sys/socket.h>
+#endif
+
+BEGIN {
+  printf("%-26s %-14s %-6s %-14s %-6s %-15s\n", "TIME", "LADDR", "LPORT",
+      "RADDR", "RPORT", "STATE");
+  // From include/net/tcp_states.h
+  @tcp_states[1] = "ESTABLISHED";
+  @tcp_states[2] = "SYN_SENT";
+  @tcp_states[3] = "SYN_RECV";
+  @tcp_states[4] = "FIN_WAIT1";
+  @tcp_states[5] = "FIN_WAIT2";
+  @tcp_states[6] = "TIME_WAIT";
+  @tcp_states[7] = "CLOSE";
+  @tcp_states[8] = "CLOSE_WAIT";
+  @tcp_states[9] = "LAST_ACK";
+  @tcp_states[10] = "LISTEN";
+  @tcp_states[11] = "CLOSING";
+  @tcp_states[12] = "NEW_SYN_RECV";
+}
+
+kprobe:tcp_retransmit_skb {
+  $sk = (struct sock *) arg0;
+  $inet_family = $sk->__sk_common.skc_family;
+  if ($inet_family == AF_INET || $inet_family == AF_INET6) {
+    if ($inet_family == AF_INET) {
+      $laddr = ntop($sk->__sk_common.skc_rcv_saddr);
+      $raddr = ntop($sk->__sk_common.skc_daddr);
+    }
+    else {
+      $laddr = ntop($sk->__sk_common.skc_v6_rcv_saddr.in6_u.u6_addr8);
+      $raddr = ntop($sk->__sk_common.skc_v6_daddr.in6_u.u6_addr8);
+    }
+    $lport = $sk->__sk_common.skc_num;
+    $rport = $sk->__sk_common.skc_dport;
+    $rport = ($rport >> 8) | (($rport << 8) & 0x00FF00);
+    $state = @tcp_states[$sk->__sk_common.skc_state];
+    printf("%-26s %-14s %-6d %-14s %-6d %-15s\n",
+        strftime("%Y-%m-%d-%H:%M:%S.%f", nsecs), $laddr, $lport, $raddr, $rport,
+        $state);
+  }
+}
+
+END {
+  clear(@tcp_states);
+}

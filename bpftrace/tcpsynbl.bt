@@ -1,0 +1,99 @@
+/*
+ * tcpsynbl - Monitor length and latency (in nanoseconds) of SYN backlog.
+ *
+ * Positional parameters:
+ *  $1: Monitoring interval in milliseconds.
+ *  $2: Port number to be monitored.
+ *
+ * Copyright (C) 2022 Georgia Tech Center for Experimental Research in Computer
+ * Systems
+ *
+ * Author: Rodrigo Alves Lima
+ */
+
+#ifndef BPFTRACE_HAVE_BTF
+#include <net/inet_connection_sock.h>
+#include <net/inet_sock.h>
+#include <net/sock.h>
+#endif
+
+BEGIN {
+  @lastprint = nsecs;
+  // Print log header.
+  printf("%-26s %-9s %-9s %-13s %-13s\n", "TIME",
+      "SYNBL_LEN_AVG", "SYNBL_LEN_MAX", "SYNBL_LAT_AVG", "SYNBL_LAT_MAX");
+  // Initialize global stats variables.
+  @synbl_len_max = 0;
+  @synbl_len_sum = 0;
+  @synbl_len_count = 0;
+  @synbl_lat_max = 0;
+  @synbl_lat_sum = 0;
+  @synbl_lat_count = 0;
+}
+
+profile:hz:99
+/(nsecs - @lastprint) / 1000000 >= $1/ {
+  @lastprint = nsecs;
+  // Print log row.
+  printf("%-26s %-9d %-9d %-13d %-13d\n",
+      strftime("%Y-%m-%d-%H:%M:%S.%f", nsecs),
+      @synbl_len_sum / @synbl_len_count,
+      @synbl_len_max,
+      @synbl_lat_sum / @synbl_lat_count,
+      @synbl_lat_max);
+  // Re-initialize global stats variables.
+  @synbl_len_max = 0;
+  @synbl_len_sum = 0;
+  @synbl_len_count = 0;
+  @synbl_lat_max = 0;
+  @synbl_lat_sum = 0;
+  @synbl_lat_count = 0;
+}
+
+/* Trace addition to the TCP SYN backlog. */
+kprobe:inet_csk_reqsk_queue_hash_add {
+  $sk = (struct sock *) arg0;
+  $lport = $sk->__sk_common.skc_num;
+  if ($lport == $2) {
+    $req = (struct request_sock *) arg1;
+    // Set entry time in SYN backlog.
+    @synbl_time[$req] = nsecs;
+    // Update SYN backlog length.
+    $synbl_len = (((struct inet_connection_sock *) $sk)->icsk_accept_queue.qlen.counter + 1);
+    if ($synbl_len > @synbl_len_max) {
+      @synbl_len_max = $synbl_len;
+    }
+    @synbl_len_sum += $synbl_len;
+    @synbl_len_count += 1;
+  }
+}
+
+/* Trace arrival of TCP ACK packet. */
+kprobe:tcp_v4_syn_recv_sock {
+  $sk = (struct sock *) arg0;
+  $lport = $sk->__sk_common.skc_num;
+  if ($lport == $2) {
+    $req = (struct request_sock *) arg2;
+    // Update SYN backlog latency.
+    if (@synbl_time[$req]) {
+      $synbl_lat = (nsecs - @synbl_time[$req]);
+      if ($synbl_lat > @synbl_lat_max) {
+        @synbl_lat_max = $synbl_lat;
+      }
+      @synbl_lat_sum += $synbl_lat;
+      @synbl_lat_count += 1;
+      delete(@synbl_time[$req]);
+    }
+  }
+}
+
+END {
+  // Clear global variables.
+  clear(@synbl_len_max);
+  clear(@synbl_len_sum);
+  clear(@synbl_len_count);
+  clear(@synbl_lat_max);
+  clear(@synbl_lat_sum);
+  clear(@synbl_lat_count);
+  clear(@synbl_time);
+}

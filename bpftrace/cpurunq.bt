@@ -1,0 +1,107 @@
+/*
+ * cpurunq - Monitor CPU run queue length and latency (in nanoseconds).
+ *
+ * Positional parameters:
+ *  $1: Monitoring interval in milliseconds.
+ *
+ * Copyright (C) 2022 Georgia Tech Center for Experimental Research in Computer
+ * Systems
+ *
+ * Author: Rodrigo Alves Lima
+ *
+ * Based on runqlen.bt and runqlat.bt from the official bpftrace repository.
+ *  Copyright 2018 Netflix, Inc.
+ *  Licensed under the Apache License, Version 2.0 (the "License")
+ */
+
+#ifndef BPFTRACE_HAVE_BTF
+#include <linux/sched.h>
+
+// From kernel/sched/sched.h:
+struct cfs_rq {
+  struct load_weight  load;
+  unsigned long       runnable_weight;
+  unsigned int        nr_running;
+  unsigned int        h_nr_running;       /* SCHED_{NORMAL,BATCH,IDLE} */
+  unsigned int        idle_h_nr_running;  /* SCHED_IDLE */
+};
+#endif
+
+BEGIN {
+  @lastprint = nsecs;
+  // Print log header.
+  printf("%-26s %-9s %-9s %-13s %-13s\n", "TIME", "QLEN_AVG", "QLEN_MAX",
+      "QLAT_AVG", "QLAT_MAX");
+  // Initialize global stats variables.
+  @qlat_max = 0;
+  @qlat_sum = 0;
+  @qlat_count = 0;
+  @qlen_max = 0;
+  @qlen_sum = 0;
+  @qlen_count = 0;
+}
+
+profile:hz:99
+/(nsecs - @lastprint) / 1000000 >= $1/ {
+  @lastprint = nsecs;
+  // Print log row.
+  printf("%-26s %-9d %-9d %-13d %-13d\n",
+      strftime("%Y-%m-%d-%H:%M:%S.%f", nsecs),
+      @qlen_sum / @qlen_count,
+      @qlen_max,
+      @qlat_sum / @qlat_count,
+      @qlat_max);
+  // Re-initialize global stats variables.
+  @qlat_max = 0;
+  @qlat_sum = 0;
+  @qlat_count = 0;
+  @qlen_max = 0;
+  @qlen_sum = 0;
+  @qlen_count = 0;
+}
+
+tracepoint:sched:sched_wakeup,
+tracepoint:sched:sched_wakeup_new {
+  // Update enqueue time after waking up.
+  @qtime[args->pid] = nsecs;
+}
+
+tracepoint:sched:sched_switch {
+  if (args->prev_state == TASK_RUNNING) {
+    // Update enqueue time after preemption.
+    @qtime[args->prev_pid] = nsecs;
+  }
+  if (@qtime[args->next_pid]) {
+    // Update queue latency.
+    $qlat = (nsecs - @qtime[args->next_pid]);
+    if ($qlat > @qlat_max) {
+      @qlat_max = $qlat;
+    }
+    @qlat_sum += $qlat;
+    @qlat_count += 1;
+    delete(@qtime[args->next_pid]);
+  }
+}
+
+kprobe:enqueue_task_fair {
+  $p = (struct task_struct *) arg1;
+  // Update queue length.
+  $qlen = ((struct cfs_rq *) ($p->se.cfs_rq))->nr_running;
+  if ($qlen > @qlen_max) {
+    @qlen_max = $qlen;
+  }
+  @qlen_sum += $qlen;
+  @qlen_count += 1;
+}
+
+END {
+  // Clear global variables.
+  clear(@lastprint);
+  clear(@qlat_max);
+  clear(@qlat_sum);
+  clear(@qlat_count);
+  clear(@qlen_max);
+  clear(@qlen_sum);
+  clear(@qlen_count);
+  clear(@qtime);
+}
