@@ -82,8 +82,8 @@ To generate experiment configuration files in `node-0`:
 ./tutorial_configuration_setup.sh \
     --username [your cloudlab username] \
     --controller_node [node-0 hostname] \
-    --system_template BuzzBlog-19_xl170_4CPU.yml \
-    --workload_template BuzzBlog-bursty_workload.yml
+    --system_template BuzzBlog-19_xl170_TUTORIAL.yml \
+    --workload_template BuzzBlog-bursty_workload_TUTORIAL.yml
 ```
 
 Log into `node-0`:
