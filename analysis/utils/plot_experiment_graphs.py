@@ -1187,6 +1187,7 @@ class TCPRetransLogAnalysis(LogAnalysis):
                          (self._retrans.index <= max_time)].groupby(["window_%s" % window])["window_%s" % window].count()
       if df.empty:
         continue
+      df = df.reindex(range(int(df.index.min()), int(df.index.max()) + 1, window), fill_value=0)
       # Plot
       ax = fig.add_subplot(len(addr_port or self._addr_port), 1, i + 1)
       ax.axvline(x=self._ramp_up_duration * 1000, ls="--", color="green")
@@ -1194,13 +1195,13 @@ class TCPRetransLogAnalysis(LogAnalysis):
       ax.grid(alpha=0.75)
       ax.set_xlim((df.index.min(), df.index.max()))
       ax.set_ylim((0, df.values.max()))
-      df.interpolate(method="linear").plot(ax=ax,
-                                           kind="line",
-                                           title="%s:%s - TCP Packet Retransmissions" % (ap[0], ap[1]),
-                                           xlabel="Time (millisec)" if not short else "",
-                                           ylabel="Count (Retransmissions)",
-                                           color="black",
-                                           grid=True)
+      df.plot(ax=ax,
+              kind="line",
+              title="%s:%s - TCP Packet Retransmissions" % (ap[0], ap[1]),
+              xlabel="Time (millisec)" if not short else "",
+              ylabel="Count (Retransmissions)",
+              color="black",
+              grid=True)
     return fig
 
 
