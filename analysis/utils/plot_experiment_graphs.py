@@ -1187,7 +1187,7 @@ class TCPRetransLogAnalysis(LogAnalysis):
                          (self._retrans.index <= max_time)].groupby(["window_%s" % window])["window_%s" % window].count()
       if df.empty:
         continue
-      df = df.reindex(range(int(df.index.min()), int(df.index.max()) + 1, window), fill_value=0)
+      df = df.reindex(range(int(min_time * 1000), int(max_time * 1000) + 1, window), fill_value=0)
       # Plot
       ax = fig.add_subplot(len(addr_port or self._addr_port), 1, i + 1)
       ax.axvline(x=self._ramp_up_duration * 1000, ls="--", color="green")
