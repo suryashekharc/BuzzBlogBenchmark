@@ -151,3 +151,7 @@ Finally, terminate the CloudLab experiment.
 ## Data Analysis
 In directory `analysis`, you can find scripts and Jupyter notebooks to assist in
 the analysis of experiment results.
+
+A detailed analysis of this experiment's results, reproducing the verification
+of the millibottleneck theory of performance bugs, can be found in these
+[slides](https://www.dropbox.com/scl/fi/2paquyzwkne0ky99eyn82/Wise-Toolkit-for-the-Performance-Study-of-Microservice-Based-Systems.pptx?dl=0&rlkey=x5yhyl9d356799n4nwgxzz8hu).
