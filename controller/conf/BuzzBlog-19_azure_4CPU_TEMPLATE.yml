@@ -1,7 +1,7 @@
 # Copyright (C) 2022 Georgia Tech Center for Experimental Research in Computer
 # Systems
 
-wise-{{username}}-01000.eastus.cloudapp.azure.com:
+{{username}}-wise-01000.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -41,7 +41,7 @@ wise-{{username}}-01000.eastus.cloudapp.azure.com:
           - "/usr/local/etc/loadgen:/usr/local/etc/loadgen"
         detach: ""
         env:
-          - "hostname=wise-{{username}}-01004.eastus.cloudapp.azure.com"
+          - "hostname={{username}}-wise-01004.eastus.cloudapp.azure.com"
           - "port=1080"
           - "n_workers=16"
           - "seed=42"
@@ -60,7 +60,7 @@ wise-{{username}}-01000.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01001.eastus.cloudapp.azure.com:
+{{username}}-wise-01001.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -100,7 +100,7 @@ wise-{{username}}-01001.eastus.cloudapp.azure.com:
           - "/usr/local/etc/loadgen:/usr/local/etc/loadgen"
         detach: ""
         env:
-          - "hostname=wise-{{username}}-01005.eastus.cloudapp.azure.com"
+          - "hostname={{username}}-wise-01005.eastus.cloudapp.azure.com"
           - "port=1080"
           - "n_workers=16"
           - "seed=42"
@@ -119,7 +119,7 @@ wise-{{username}}-01001.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01002.eastus.cloudapp.azure.com:
+{{username}}-wise-01002.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -159,7 +159,7 @@ wise-{{username}}-01002.eastus.cloudapp.azure.com:
           - "/usr/local/etc/loadgen:/usr/local/etc/loadgen"
         detach: ""
         env:
-          - "hostname=wise-{{username}}-01006.eastus.cloudapp.azure.com"
+          - "hostname={{username}}-wise-01006.eastus.cloudapp.azure.com"
           - "port=1080"
           - "n_workers=16"
           - "seed=42"
@@ -178,7 +178,7 @@ wise-{{username}}-01002.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01003.eastus.cloudapp.azure.com:
+{{username}}-wise-01003.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -218,7 +218,7 @@ wise-{{username}}-01003.eastus.cloudapp.azure.com:
           - "/usr/local/etc/loadgen:/usr/local/etc/loadgen"
         detach: ""
         env:
-          - "hostname=wise-{{username}}-01007.eastus.cloudapp.azure.com"
+          - "hostname={{username}}-wise-01007.eastus.cloudapp.azure.com"
           - "port=1080"
           - "n_workers=16"
           - "seed=42"
@@ -237,7 +237,7 @@ wise-{{username}}-01003.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01004.eastus.cloudapp.azure.com:
+{{username}}-wise-01004.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -324,7 +324,7 @@ wise-{{username}}-01004.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01005.eastus.cloudapp.azure.com:
+{{username}}-wise-01005.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -411,7 +411,7 @@ wise-{{username}}-01005.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01006.eastus.cloudapp.azure.com:
+{{username}}-wise-01006.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -498,7 +498,7 @@ wise-{{username}}-01006.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01007.eastus.cloudapp.azure.com:
+{{username}}-wise-01007.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -585,7 +585,7 @@ wise-{{username}}-01007.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01008.eastus.cloudapp.azure.com:
+{{username}}-wise-01008.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -683,7 +683,7 @@ wise-{{username}}-01008.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01009.eastus.cloudapp.azure.com:
+{{username}}-wise-01009.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -767,7 +767,7 @@ wise-{{username}}-01009.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01010.eastus.cloudapp.azure.com:
+{{username}}-wise-01010.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -860,7 +860,7 @@ wise-{{username}}-01010.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01011.eastus.cloudapp.azure.com:
+{{username}}-wise-01011.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -953,7 +953,7 @@ wise-{{username}}-01011.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01012.eastus.cloudapp.azure.com:
+{{username}}-wise-01012.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -1051,7 +1051,7 @@ wise-{{username}}-01012.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01013.eastus.cloudapp.azure.com:
+{{username}}-wise-01013.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -1135,7 +1135,7 @@ wise-{{username}}-01013.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01014.eastus.cloudapp.azure.com:
+{{username}}-wise-01014.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -1230,7 +1230,7 @@ wise-{{username}}-01014.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01015.eastus.cloudapp.azure.com:
+{{username}}-wise-01015.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -1314,7 +1314,7 @@ wise-{{username}}-01015.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01016.eastus.cloudapp.azure.com:
+{{username}}-wise-01016.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -1326,7 +1326,7 @@ wise-{{username}}-01016.eastus.cloudapp.azure.com:
     # Set TCP queue sizes.
     - "sudo ethtool -G ens1f1 rx 8192"
     - "sudo ethtool -G ens1f1 tx 8192"
-    - "sudo ifconfig ens1f1 txqueuelen 8192" 
+    - "sudo ifconfig ens1f1 txqueuelen 8192"
     # Disable Intel Turbo Boost.
     - "echo \"1\" | sudo tee /sys/devices/system/cpu/intel_pstate/no_turbo"
     # Disable SMT.
@@ -1408,7 +1408,7 @@ wise-{{username}}-01016.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01017.eastus.cloudapp.azure.com:
+{{username}}-wise-01017.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
@@ -1496,7 +1496,7 @@ wise-{{username}}-01017.eastus.cloudapp.azure.com:
         subsys: "CDM"
         options: "Tm"
         plot: ""
-wise-{{username}}-01018.eastus.cloudapp.azure.com:
+{{username}}-wise-01018.eastus.cloudapp.azure.com:
   ssh:
     username: "{{username}}"
     port: 22
