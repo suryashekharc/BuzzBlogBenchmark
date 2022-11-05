@@ -123,7 +123,7 @@ class RequestLogAnalysis(LogAnalysis):
     df["latency_bin"] = df.apply(lambda r: int(r["latency"] // latency_bin_in_ms), axis=1)
     # Plot
     fig = plt.figure(figsize=(24, 12))
-    ax = fig.gca(xlabel="Latency (millisec)", ylabel="Count (Requests)")
+    ax = fig.gca()
     ax.grid(alpha=0.75)
     ax.set_yscale("log")
     max_latency_in_s = (df["latency"].max() + 2 * latency_bin_in_ms) / 1000
