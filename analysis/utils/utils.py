@@ -438,13 +438,13 @@ def build_collectl_mem_df(experiment_dirpath):
   return mem
 
 
-def build_cpurunq_df(experiment_dirpath):
+def build_cpurunq_df(experiment_dirpath, time_delta_in_s=0):
   # Extract experiment information.
   start_time = get_experiment_start_time(experiment_dirpath) - pd.Timedelta(hours=6)
   # Build data frame.
   queue = pd.concat([df[2] for df in get_cpurunq_df(experiment_dirpath)])
   # (Re) Build columns.
-  queue["timestamp"] = queue.apply(lambda r: (r["timestamp"] - start_time).total_seconds(), axis=1)
+  queue["timestamp"] = queue.apply(lambda r: (r["timestamp"] - start_time).total_seconds() + time_delta_in_s, axis=1)
   queue["window_1000"] = queue["timestamp"].round(0).multiply(1000)
   queue["window_10"] = queue["timestamp"].round(2).multiply(1000)
   queue["qlat_avg"] = queue["qlat_avg"].div(1000000.0)
@@ -455,13 +455,13 @@ def build_cpurunq_df(experiment_dirpath):
   return queue
 
 
-def build_cpurunqfunc_df(experiment_dirpath):
+def build_cpurunqfunc_df(experiment_dirpath, time_delta_in_s=0):
   # Extract experiment information.
   start_time = get_experiment_start_time(experiment_dirpath) - pd.Timedelta(hours=6)
   # Build data frame.
   queue = pd.concat([df[2] for df in get_cpurunqfunc_df(experiment_dirpath)])
   # (Re) Build columns.
-  queue["timestamp"] = queue.apply(lambda r: (r["timestamp"] - start_time).total_seconds(), axis=1)
+  queue["timestamp"] = queue.apply(lambda r: (r["timestamp"] - start_time).total_seconds() + time_delta_in_s, axis=1)
   queue["window_1000"] = queue["timestamp"].round(0).multiply(1000)
   queue["window_10"] = queue["timestamp"].round(2).multiply(1000)
   queue["qlat_avg"] = queue["qlat_avg"].div(1000000.0)
@@ -472,13 +472,13 @@ def build_cpurunqfunc_df(experiment_dirpath):
   return queue
 
 
-def build_tcpsynbl_df(experiment_dirpath):
+def build_tcpsynbl_df(experiment_dirpath, time_delta_in_s=0):
   # Extract experiment information.
   start_time = get_experiment_start_time(experiment_dirpath) - pd.Timedelta(hours=6)
   # Build data frame.
   synbl = pd.concat([df[2] for df in get_tcpsynbl_df(experiment_dirpath)])
   # (Re) Build columns.
-  synbl["timestamp"] = synbl.apply(lambda r: (r["timestamp"] - start_time).total_seconds(), axis=1)
+  synbl["timestamp"] = synbl.apply(lambda r: (r["timestamp"] - start_time).total_seconds() + time_delta_in_s, axis=1)
   synbl["window_1000"] = synbl["timestamp"].round(0).multiply(1000)
   synbl["window_10"] = synbl["timestamp"].round(2).multiply(1000)
   synbl["synbl_lat_avg"] = synbl["synbl_lat_avg"].div(1000000.0)
@@ -489,13 +489,13 @@ def build_tcpsynbl_df(experiment_dirpath):
   return synbl
 
 
-def build_tcpacceptq_df(experiment_dirpath):
+def build_tcpacceptq_df(experiment_dirpath, time_delta_in_s=0):
   # Extract experiment information.
   start_time = get_experiment_start_time(experiment_dirpath) - pd.Timedelta(hours=6)
   # Build data frame.
   acceptq = pd.concat([df[2] for df in get_tcpacceptq_df(experiment_dirpath)])
   # (Re) Build columns.
-  acceptq["timestamp"] = acceptq.apply(lambda r: (r["timestamp"] - start_time).total_seconds(), axis=1)
+  acceptq["timestamp"] = acceptq.apply(lambda r: (r["timestamp"] - start_time).total_seconds() + time_delta_in_s, axis=1)
   acceptq["window_1000"] = acceptq["timestamp"].round(0).multiply(1000)
   acceptq["window_10"] = acceptq["timestamp"].round(2).multiply(1000)
   acceptq["acceptq_lat_avg"] = acceptq["acceptq_lat_avg"].div(1000000.0)
@@ -506,13 +506,13 @@ def build_tcpacceptq_df(experiment_dirpath):
   return acceptq
 
 
-def build_tcpretrans_df(experiment_dirpath):
+def build_tcpretrans_df(experiment_dirpath, time_delta_in_s=0):
   # Extract experiment information.
   start_time = get_experiment_start_time(experiment_dirpath) - pd.Timedelta(hours=6)
   # Build data frame.
   retrans = pd.concat([df[2] for df in get_tcpretrans_df(experiment_dirpath)])
   # (Re) Build columns.
-  retrans["timestamp"] = retrans.apply(lambda r: (r["timestamp"] - start_time).total_seconds(), axis=1)
+  retrans["timestamp"] = retrans.apply(lambda r: (r["timestamp"] - start_time).total_seconds() + time_delta_in_s, axis=1)
   retrans["window_1000"] = retrans["timestamp"].round(0).multiply(1000)
   retrans["window_10"] = retrans["timestamp"].round(2).multiply(1000)
   # (Re) Create index.

@@ -883,9 +883,9 @@ class RPCCallLogAnalysis(LogAnalysis):
 
 class CPURunQLogAnalysis(LogAnalysis):
 
-  def __init__(self, experiment_dirpath, output_dirpath=None):
+  def __init__(self, experiment_dirpath, output_dirpath=None, time_delta_in_s=0):
     super().__init__(experiment_dirpath, output_dirpath)
-    self._cpurunq = build_cpurunq_df(experiment_dirpath)
+    self._cpurunq = build_cpurunq_df(experiment_dirpath, time_delta_in_s=time_delta_in_s)
 
   @LogAnalysis.save_fig
   def plot_cpu_run_queue_length(self, interval=None, node_names=None, short=False):
@@ -954,9 +954,9 @@ class CPURunQLogAnalysis(LogAnalysis):
 
 class CPURunQFuncLogAnalysis(LogAnalysis):
 
-  def __init__(self, experiment_dirpath, output_dirpath=None):
+  def __init__(self, experiment_dirpath, output_dirpath=None, time_delta_in_s=0):
     super().__init__(experiment_dirpath, output_dirpath)
-    self._cpurunqfunc = build_cpurunqfunc_df(experiment_dirpath)
+    self._cpurunqfunc = build_cpurunqfunc_df(experiment_dirpath, time_delta_in_s=time_delta_in_s)
 
   @LogAnalysis.save_fig
   def plot_cpu_run_queue_length(self, interval=None, node_names=None, short=False):
@@ -1025,9 +1025,9 @@ class CPURunQFuncLogAnalysis(LogAnalysis):
 
 class TCPSynblLogAnalysis(LogAnalysis):
 
-  def __init__(self, experiment_dirpath, output_dirpath=None):
+  def __init__(self, experiment_dirpath, output_dirpath=None, time_delta_in_s=0):
     super().__init__(experiment_dirpath, output_dirpath)
-    self._synbl = build_tcpsynbl_df(experiment_dirpath)
+    self._synbl = build_tcpsynbl_df(experiment_dirpath, time_delta_in_s=time_delta_in_s)
 
   @LogAnalysis.save_fig
   def plot_syn_backlog_length(self, interval=None, node_names=None, short=False):
@@ -1096,9 +1096,9 @@ class TCPSynblLogAnalysis(LogAnalysis):
 
 class TCPAcceptqLogAnalysis(LogAnalysis):
 
-  def __init__(self, experiment_dirpath, output_dirpath=None):
+  def __init__(self, experiment_dirpath, output_dirpath=None, time_delta_in_s=0):
     super().__init__(experiment_dirpath, output_dirpath)
-    self._acceptq = build_tcpacceptq_df(experiment_dirpath)
+    self._acceptq = build_tcpacceptq_df(experiment_dirpath, time_delta_in_s=time_delta_in_s)
 
   @LogAnalysis.save_fig
   def plot_accept_queue_length(self, interval=None, node_names=None, short=False):
@@ -1167,9 +1167,9 @@ class TCPAcceptqLogAnalysis(LogAnalysis):
 
 class TCPRetransLogAnalysis(LogAnalysis):
 
-  def __init__(self, experiment_dirpath, output_dirpath=None):
+  def __init__(self, experiment_dirpath, output_dirpath=None, time_delta_in_s=0):
     super().__init__(experiment_dirpath, output_dirpath)
-    self._retrans = build_tcpretrans_df(experiment_dirpath)
+    self._retrans = build_tcpretrans_df(experiment_dirpath, time_delta_in_s=time_delta_in_s)
     self._addr_port = [(addr, port) for addr, port in set(zip(self._retrans["raddr"], self._retrans["rport"])) if port > 1080 and port < 1100]
 
   def plot_number_of_tcp_packet_retransmissions(self, interval=None, addr_port=None, short=False):
