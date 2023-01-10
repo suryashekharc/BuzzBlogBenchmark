@@ -10,6 +10,11 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import matplotlib.pyplot as plt
+import matplotlib
+import seaborn as sns
+sns.set_style("whitegrid")
+sns.set(font_scale=2)
+
 import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.path.join("..", "..")))
@@ -113,6 +118,7 @@ class RequestLogAnalysis(LogAnalysis):
             grid=True)
     return fig
 
+
   @LogAnalysis.save_fig
   def plot_latency_distribution_of_requests(self, latency_bin_in_ms=25, text_y=None):
     # Data frame
@@ -120,7 +126,8 @@ class RequestLogAnalysis(LogAnalysis):
                         (self._requests.index <= self._total_duration - self._ramp_down_duration)]
     if df.empty:
       return None
-    df["latency_bin"] = df.apply(lambda r: int(r["latency"] // latency_bin_in_ms), axis=1)
+    bucket_str =  f'Buckets of {latency_bin_in_ms} ms'
+    df[bucket_str] = df.apply(lambda r: int(r["latency"] // latency_bin_in_ms), axis=1)
     # Plot
     fig = plt.figure(figsize=(24, 12))
     ax = fig.gca()
@@ -128,8 +135,8 @@ class RequestLogAnalysis(LogAnalysis):
     ax.set_yscale("log")
     max_latency_in_s = (df["latency"].max() + 2 * latency_bin_in_ms) / 1000
     ax.set_xlim((0, (1000 // latency_bin_in_ms) * max_latency_in_s))
-    ax.set_xticks(range(int((1000 // latency_bin_in_ms) * max_latency_in_s) + 1))
-    ax.set_xticklabels(range(0, (int((1000 // latency_bin_in_ms) * max_latency_in_s) + 1) * latency_bin_in_ms, latency_bin_in_ms))
+    # ax.set_xticks(range(int((1000 // latency_bin_in_ms) * max_latency_in_s) + 1))
+    # ax.set_xticklabels(range(0, (int((1000 // latency_bin_in_ms) * max_latency_in_s) + 1) * latency_bin_in_ms, latency_bin_in_ms))
     if text_y:
       p50 = df["latency"].quantile(0.50)
       ax.axvline(x=p50 / latency_bin_in_ms, ls="dotted", lw=5, color="darkorange")
@@ -137,11 +144,16 @@ class RequestLogAnalysis(LogAnalysis):
       p999 = df["latency"].quantile(0.999)
       ax.axvline(x=p999 / latency_bin_in_ms, ls="dotted", lw=5, color="darkorange")
       ax.text(x=p999 / latency_bin_in_ms, y=text_y, s=" P99.9", fontsize=22, color="darkorange")
-    df["latency_bin"].plot(ax=ax,
-                           kind="hist",
-                           title="Latency Distribution of Requests",
-                           bins=range(int((1000 // latency_bin_in_ms) * max_latency_in_s)),
-                           grid=True)
+    sns.histplot(
+      data=df[bucket_str],
+      bins=range(int((1000 // latency_bin_in_ms) * max_latency_in_s)),
+      ax=ax,
+    ).set_title('Latency distribution of requests')
+    # df["latency_bin"].plot(ax=ax,
+    #                        kind="hist",
+    #                        title="Latency Distribution of Requests",
+    #                        bins=range(int((1000 // latency_bin_in_ms) * max_latency_in_s)),
+    #                        grid=True)
     return fig
 
   @LogAnalysis.save_fig
@@ -157,6 +169,7 @@ class RequestLogAnalysis(LogAnalysis):
     df = self._requests[(self._requests["status"] == "successful") & (self._requests.index >= min_time) & (self._requests.index <= max_time)]
     if request_type is not None:
       df = df[(df["type"] == request_type)]
+    df["latency"] = df["latency"].astype('float')
     df = df.groupby(["window_%s" % window])["latency"].quantile(latency_percentiles).unstack()
     if df.empty:
       return None
@@ -168,6 +181,8 @@ class RequestLogAnalysis(LogAnalysis):
     ax.set_ylim((0, df.values.max()))
     ax.axvline(x=self._ramp_up_duration * 1000, ls="--", color="green")
     ax.axvline(x=(self._total_duration - self._ramp_down_duration) * 1000, ls="--", color="green")
+    ax.get_xaxis().set_major_formatter(
+      matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
     df.interpolate(method="linear").plot(ax=ax,
                                          kind="line",
                                          title="Instantaneous Latency of Requests" + ("" if not request_type else (" - %s" % request_type)),
@@ -179,7 +194,8 @@ class RequestLogAnalysis(LogAnalysis):
   @LogAnalysis.save_fig
   def plot_request_throughput(self, interval=None):
     if not interval:
-      window = 1000
+      # window = 1000
+      window = 10
       min_time = 0
       max_time = self._total_duration
     else:
@@ -197,6 +213,8 @@ class RequestLogAnalysis(LogAnalysis):
     ax.set_xlim((min_time * 1000, max_time * 1000))
     ax.axvline(x=self._ramp_up_duration * 1000, ls="--", color="green")
     ax.axvline(x=(self._total_duration - self._ramp_down_duration) * 1000, ls="--", color="green")
+    ax.get_xaxis().set_major_formatter(
+      matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
     df.interpolate(method="linear").plot(ax=ax,
                                          kind="line",
                                          title="Request Throughput",
