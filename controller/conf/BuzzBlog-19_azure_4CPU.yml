@@ -29,6 +29,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     loadgen:
       image: "rodrigoalveslima/buzzblog:loadgen_v1.0"
@@ -88,6 +92,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     loadgen:
       image: "rodrigoalveslima/buzzblog:loadgen_v1.0"
@@ -147,6 +155,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     loadgen:
       image: "rodrigoalveslima/buzzblog:loadgen_v1.0"
@@ -206,6 +218,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     loadgen:
       image: "rodrigoalveslima/buzzblog:loadgen_v1.0"
@@ -274,6 +290,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     apigateway1:
       image: "rodrigoalveslima/buzzblog:apigateway_v1.1"
@@ -361,6 +381,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     apigateway1:
       image: "rodrigoalveslima/buzzblog:apigateway_v1.1"
@@ -448,6 +472,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     apigateway1:
       image: "rodrigoalveslima/buzzblog:apigateway_v1.1"
@@ -535,6 +563,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     apigateway1:
       image: "rodrigoalveslima/buzzblog:apigateway_v1.1"
@@ -625,6 +657,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     account_service:
       image: "rodrigoalveslima/buzzblog:account_v1.1"
@@ -720,6 +756,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     account_database:
       image: "postgres:13.1 -c max_connections=32"
@@ -807,6 +847,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     follow_service:
       image: "rodrigoalveslima/buzzblog:follow_v1.1"
@@ -900,6 +944,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     like_service:
       image: "rodrigoalveslima/buzzblog:like_v1.1"
@@ -993,6 +1041,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     post_service:
       image: "rodrigoalveslima/buzzblog:post_v1.1"
@@ -1088,6 +1140,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     post_database:
       image: "postgres:13.1 -c max_connections=32"
@@ -1175,6 +1231,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     uniquepair_service:
       image: "rodrigoalveslima/buzzblog:uniquepair_v1.1"
@@ -1267,6 +1327,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     uniquepair_database:
       image: "postgres:13.1 -c max_connections=32"
@@ -1354,6 +1418,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     trending_service:
       image: "rodrigoalveslima/buzzblog:trending_v1.1"
@@ -1445,6 +1513,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   templates:
     redis.conf:
       output: "/etc/redis/redis.conf"
@@ -1536,6 +1608,10 @@
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_rmem: "4096 131072 16777216"
     net.ipv4.tcp_wmem: "4096 131072 16777216"
+    net.ipv4.neigh.default.retrans_time_ms: "5000"
+    net.ipv4.neigh.docker0.retrans_time_ms: "5000"
+    net.ipv4.neigh.eth0.retrans_time_ms: "5000"
+    net.ipv4.neigh.lo.retrans_time_ms: "5000"
   containers:
     wordfilter_service:
       image: "rodrigoalveslima/buzzblog:wordfilter_v1.1"
